@@ -1,3 +1,28 @@
 canvas {
-  margin: 20px;
+  margin: 0px 20px;
+}
+
+h1 {
+  font-family: courier;
+  font-size: 20pt;
+  margin-left: 20px;
+}
+
+input[type=text] {
+  width: 40px;
+  margin: 2px 0px;
+  text-align: center;
+}
+
+input[type=button] {
+  padding: 5px 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+  border: solid 1px gray;
+}
+
+#controls {
+  display: inline-block;
+  margin-bottom: 20px;
+  vertical-align: bottom;
 }
