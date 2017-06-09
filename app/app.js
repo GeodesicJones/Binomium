@@ -16,7 +16,7 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = { n: 8, p: 0.5, numObservations: 400, data: [], labels: "" };
+    _this.state = { n: 8, p: 0.5, numObservations: 400 };
     _this.onClick = _this.onClick.bind(_this);
     _this.onBlurN = _this.onBlurN.bind(_this);
     _this.onBlurP = _this.onBlurP.bind(_this);
@@ -91,42 +91,84 @@ var App = function (_React$Component) {
           null,
           "Welcome to The Binomium"
         ),
-        React.createElement(Chart, {
-          width: 550,
-          height: 450,
-          id: "chart",
-          padding: 15,
-          series: this.state.series,
-          labels: this.state.labels
-        }),
         React.createElement(
           "div",
-          { id: "controls" },
-          "n:",
-          " ",
-          React.createElement("input", {
-            type: "text",
-            defaultValue: this.state.n,
-            onChange: this.onBlurN
+          { id: "interactive" },
+          React.createElement(Chart, {
+            width: 450,
+            height: 450,
+            id: "chart",
+            padding: 15,
+            series: this.state.series,
+            labels: this.state.labels
           }),
-          React.createElement("br", null),
-          "p:",
-          " ",
-          React.createElement("input", {
-            type: "text",
-            defaultValue: this.state.p,
-            onChange: this.onBlurP
-          }),
-          React.createElement("br", null),
-          "#: ",
-          " ",
-          React.createElement("input", {
-            type: "text",
-            defaultValue: this.state.numObservations,
-            onChange: this.onBlurNumObservations
-          }),
-          React.createElement("br", null),
-          React.createElement("input", { type: "button", onClick: this.onClick, value: "Make It So" })
+          React.createElement(
+            "div",
+            { id: "controls" },
+            React.createElement(
+              "div",
+              null,
+              "n:",
+              " ",
+              React.createElement("input", {
+                type: "text",
+                defaultValue: this.state.n,
+                onChange: this.onBlurN
+              })
+            ),
+            React.createElement(
+              "div",
+              null,
+              "p:",
+              " ",
+              React.createElement("input", {
+                type: "text",
+                defaultValue: this.state.p,
+                onChange: this.onBlurP
+              })
+            ),
+            React.createElement(
+              "div",
+              null,
+              "#: ",
+              " ",
+              React.createElement("input", {
+                type: "text",
+                defaultValue: this.state.numObservations,
+                onChange: this.onBlurNumObservations
+              })
+            ),
+            React.createElement("input", { type: "button", onClick: this.onClick, value: "Make It So" })
+          )
+        ),
+        React.createElement(
+          "div",
+          { id: "description" },
+          "The Binomium is a playground for exploring binomial distributions. Right now it's pretty simple: it simulates tossing a handful of coins and counting how many land heads up.",
+          React.createElement("p", null),
+          "To operate, fill in the inputs:",
+          React.createElement(
+            "ul",
+            null,
+            React.createElement(
+              "li",
+              null,
+              "n: the number of coins to toss"
+            ),
+            React.createElement(
+              "li",
+              null,
+              "p: the probability each coin will land heads up (these coins aren't always fair)"
+            ),
+            React.createElement(
+              "li",
+              null,
+              "#: the number of times to toss the whole handful"
+            )
+          ),
+          "Then click 'Make It So', and it will.",
+          React.createElement("p", null),
+          "What's interesting is how a series of random events approximates a non-random shape. In my mind, it's a very simple example of emergent phenomana."
         )
       );
     }

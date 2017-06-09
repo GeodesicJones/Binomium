@@ -1,0 +1,1 @@
+aws s3 cp ..\app s3://binomium.geodesicjones.com/ --recursive --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers

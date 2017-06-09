@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Simple template to set up a static website as BucketName.DomainName e.g., bucket.example.com.
+Parameters:
+    DomainName: 
+        Type: String
+    BucketSimpleName:
+        Type: String
+    IndexDocument:
+        Type: String
+        Default: Index.html
+Resources:
+    Bucket:
+        Type: "AWS::S3::Bucket"
+        Properties: 
+            BucketName: !Join [".", [!Ref BucketSimpleName, !Ref DomainName]]
+            AccessControl: "PublicRead"
+            WebsiteConfiguration:
+                IndexDocument: !Ref IndexDocument
+    DNS:
+        Type: "AWS::Route53::RecordSet"
+        Properties:
+            Type: "CNAME"
+            TTL: 300
+            Name:  !Join [".", [!Ref BucketSimpleName, !Ref DomainName]]
+            HostedZoneName: !Join ["", [!Ref DomainName, "."]]
+            ResourceRecords: 
+                - !GetAtt Bucket.DomainName
+                

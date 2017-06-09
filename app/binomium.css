@@ -1,11 +1,13 @@
 canvas {
-  margin: 0px 20px;
+  margin: 0 20px 20px 20px;
+  vertical-align: top;
 }
 
 h1 {
   font-family: courier;
   font-size: 20pt;
   margin-left: 20px;
+  margin-top: 20px;
 }
 
 input[type=text] {
@@ -21,8 +23,24 @@ input[type=button] {
   border: solid 1px gray;
 }
 
+#interactive {
+  float: left;
+  display: inline-block;
+}
+
 #controls {
   display: inline-block;
-  margin-bottom: 20px;
+  margin: 0 0 35px 20px;
   vertical-align: bottom;
+}
+
+#description {
+  float: left;
+  width: 400px;
+  display: inline-block;
+  margin-left: 20px;
+  font-size: 11pt;
+  font-family: arial;
+  font-weight: normal;
+  padding-top: 15px;
 }

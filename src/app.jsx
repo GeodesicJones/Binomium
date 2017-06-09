@@ -2,7 +2,7 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { n: 8, p: 0.5, numObservations: 400, data: [], labels: "" };
+    this.state = { n: 8, p: 0.5, numObservations: 400};
     this.onClick = this.onClick.bind(this);
     this.onBlurN = this.onBlurN.bind(this);
     this.onBlurP = this.onBlurP.bind(this);
@@ -61,37 +61,59 @@ class App extends React.Component {
     return (
         <div>
           <h1>Welcome to The Binomium</h1>
-          <Chart
-            width={550}
-            height={450}
-            id="chart"
-            padding={15}
-            series={this.state.series}
-            labels={this.state.labels}
-          />
-          <div id="controls">
-            n:{" "}
-            <input
-              type="text"
-              defaultValue={this.state.n}
-              onChange={this.onBlurN}
+          <div id="interactive">
+            <Chart
+              width={450}
+              height={450}
+              id="chart"
+              padding={15}
+              series={this.state.series}
+              labels={this.state.labels}
             />
-            <br />
-            p:{" "}
-            <input
-              type="text"
-              defaultValue={this.state.p}
-              onChange={this.onBlurP}
-            />
-            <br />
-            #: {" "}
-            <input
-              type="text"
-              defaultValue={this.state.numObservations}
-              onChange={this.onBlurNumObservations}
-            />
-            <br />
-            <input type="button" onClick={this.onClick} value="Make It So" />
+            <div id="controls">
+              <div>
+                n:{" "}
+                <input
+                  type="text"
+                  defaultValue={this.state.n}
+                  onChange={this.onBlurN}
+                />
+              </div>
+              <div>
+                p:{" "}
+                <input
+                  type="text"
+                  defaultValue={this.state.p}
+                  onChange={this.onBlurP}
+                />
+              </div>
+              <div>
+                #: {" "}
+                <input
+                  type="text"
+                  defaultValue={this.state.numObservations}
+                  onChange={this.onBlurNumObservations}
+                />
+              </div>
+              <input type="button" onClick={this.onClick} value="Make It So" />
+            </div>
+          </div>
+          <div id="description">
+            The Binomium is a playground for exploring binomial distributions.
+            Right now it's pretty simple: it simulates tossing a handful of coins
+            and counting how many land heads up.
+            <p/>
+            To operate, fill in the inputs:
+            <ul>
+              <li>n: the number of coins to toss</li>
+              <li>p: the probability each coin will land heads up (these coins aren't always fair)</li>
+              <li>#: the number of times to toss the whole handful</li>
+            </ul>
+            Then click 'Make It So', and it will.
+            <p/>
+            What's interesting is how a series of random events approximates
+            a non-random shape.
+            In my mind, it's a very simple example of emergent phenomana.
           </div>
       </div>
     );
