@@ -95,10 +95,9 @@ var App = function (_React$Component) {
           "div",
           { id: "interactive" },
           React.createElement(Chart, {
-            width: 450,
-            height: 450,
             id: "chart",
-            padding: 15,
+            width: 300,
+            height: 300,
             series: this.state.series,
             labels: this.state.labels
           }),

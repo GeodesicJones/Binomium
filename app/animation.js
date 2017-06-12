@@ -28,8 +28,8 @@ var AnimationBuild = function () {
       var yDelta = start.y < end.y ? this.delta : -this.delta;
 
       while (x != end.x || y != end.y) {
-        var nextX = this.isMoreLine(start.x, end.x, x) ? x + xDelta : end.x;
-        var nextY = this.isMoreLine(start.y, end.y, y) ? y + yDelta : end.y;
+        var nextX = this.isMoreLine(start.x, end.x, x + xDelta) ? x + xDelta : end.x;
+        var nextY = this.isMoreLine(start.y, end.y, y + yDelta) ? y + yDelta : end.y;
         this.frames.push({
           type: "line",
           start: { x: x, y: y },
@@ -42,15 +42,12 @@ var AnimationBuild = function () {
   }, {
     key: "text",
     value: function text(txt, start, spacing) {
-      // TODO: separate out call to context
-      var ctx = document.getElementById("chart").getContext("2d");
       var x = start.x;
       var y = start.y;
       for (var i = 0; i < txt.length; i++) {
-        var textWidth = ctx.measureText(txt[i]).width;
         this.frames.push({
           type: "text",
-          location: { x: x - textWidth / 2, y: y },
+          location: { x: x, y: y },
           text: txt[i]
         });
         x += spacing;
@@ -93,6 +90,7 @@ var AnimationDraw = function () {
   _createClass(AnimationDraw, [{
     key: "drawLine",
     value: function drawLine(start, end) {
+      this.ctx.strokeStyle = "gray";
       this.ctx.beginPath();
       this.ctx.moveTo(start.x, start.y);
       this.ctx.lineTo(end.x, end.y);
@@ -101,11 +99,15 @@ var AnimationDraw = function () {
   }, {
     key: "drawText",
     value: function drawText(text, location) {
-      this.ctx.fillText(text, location.x, location.y);
+      this.ctx.fillStyle = "black";
+      // center text horizontally
+      var measure = this.ctx.measureText(text);
+      this.ctx.fillText(text, location.x - measure.width / 2, location.y);
     }
   }, {
     key: "drawColumn",
     value: function drawColumn(width, height, location) {
+      this.ctx.fillStyle = "deepskyblue";
       this.ctx.fillRect(location.x, location.y, width, -height);
     }
   }, {

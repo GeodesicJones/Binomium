@@ -20,27 +20,48 @@ var Chart = function (_React$Component) {
   _createClass(Chart, [{
     key: "render",
     value: function render() {
-      return React.createElement("canvas", {
-        width: this.props.width,
-        height: this.props.height,
-        id: this.props.id
-      });
+      return React.createElement("canvas", { id: this.props.id, height: this.props.height, width: this.props.width });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.draw = new AnimationDraw(this.props.id);
+      this.canvas = document.getElementById(this.props.id);
+      this.chart = {
+        width: this.props.width,
+        height: this.props.height,
+        padding: 15
+      };
+
+      this.vAxis = {};
+      this.vAxis.padding = 5;
+      this.vAxis.textWidth = 20;
+      this.vAxis.width = this.vAxis.padding + this.vAxis.textWidth;
+
+      this.hAxis = {};
+      this.hAxis.padding = 3;
+      this.hAxis.textHeight = 15;
+      this.hAxis.height = this.hAxis.padding + this.hAxis.textHeight;
+
+      this.chartArea = {};
+      this.chartArea.x = this.chart.padding + this.vAxis.width;
+      this.chartArea.y = this.chart.height - this.chart.padding - this.hAxis.height;
+      this.chartArea.width = this.chart.width - this.chart.padding - this.chartArea.x;
+      this.chartArea.height = this.chartArea.y - this.chart.padding;
+
+      var draw = new AnimationDraw(this.props.id);
       var build = new AnimationBuild(10);
       this.buildBorderAnimation(build);
-      this.draw.animate(build.frames);
+      draw.animate(build.frames);
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(nextProps, nextState) {
       var build = new AnimationBuild(10);
-      build.clear(1, 1, this.props.width - 2, this.props.height - 2);
+      build.clear(1, 1, this.chart.width - 2, this.chart.height - 2);
       this.buildAxisAnimation(build, this.props.labels);
       this.buildSeriesAnimation(build, this.props.series, this.props.labels.length);
+
+      if (!this.draw) this.draw = new AnimationDraw(this.props.id);
       this.draw.cancelCurrentAnimation();
       this.draw.animate(build.frames);
     }
@@ -52,10 +73,10 @@ var Chart = function (_React$Component) {
   }, {
     key: "buildBorderAnimation",
     value: function buildBorderAnimation(build) {
-      build.line({ x: 0, y: 0 }, { x: this.props.width, y: 0 });
-      build.line({ x: this.props.width, y: 0 }, { x: this.props.width, y: this.props.height });
-      build.line({ x: this.props.width, y: this.props.height }, { x: 0, y: this.props.height });
-      build.line({ x: 0, y: this.props.height }, { x: 0, y: 0 });
+      build.line({ x: 0, y: 0 }, { x: this.chart.width, y: 0 });
+      build.line({ x: this.chart.width, y: 0 }, { x: this.chart.width, y: this.chart.height });
+      build.line({ x: this.chart.width, y: this.chart.height }, { x: 0, y: this.chart.height });
+      build.line({ x: 0, y: this.chart.height }, { x: 0, y: 0 });
     }
   }, {
     key: "buildSeriesAnimation",
@@ -66,42 +87,41 @@ var Chart = function (_React$Component) {
           maxColumnHeight = series.data[i].value;
         }
       }
-      var verticalScalingFactor = .8 * this.props.height / maxColumnHeight;
+      var verticalScalingFactor = this.chartArea.height / maxColumnHeight;
 
       for (var _i = 0; _i < series.data.length; _i++) {
         var index = series.data[_i].index;
         var value = series.data[_i].value * verticalScalingFactor;
-        var fullAxisWidth = this.props.width - this.props.padding;
-        var axisHeight = this.props.height - 2 * this.props.padding;
-        var spacing = (fullAxisWidth - 2 * this.props.padding) / columnCount;
-        var x = 2 * this.props.padding + index * spacing;
-        var y = axisHeight - 1;
-        build.column(this.columnWidth, value, { x: x, y: y });
+        var spacing = (this.chartArea.width - 2 * this.chart.padding) / columnCount;
+        build.column(this.columnWidth, value, {
+          x: this.chartArea.x + this.chart.padding + index * spacing,
+          y: this.chartArea.y - 1
+        });
       }
     }
   }, {
     key: "buildAxisAnimation",
     value: function buildAxisAnimation(build, labels) {
-      var fullAxisWidth = this.props.width - this.props.padding;
-      var axisHeight = this.props.height - 2 * this.props.padding;
-      build.line({ x: this.props.padding, y: axisHeight }, { x: fullAxisWidth, y: axisHeight });
+      // draw horizontal axis
+      build.line({ x: this.chartArea.x, y: this.chartArea.y }, { x: this.chartArea.x + this.chartArea.width, y: this.chartArea.y });
 
+      // add labels to horizontal axis
       var skipFactor = 1 + Math.floor(labels.length / 10);
       var unskippedLables = [];
       for (var i = 0; i < labels.length; i += skipFactor) {
         unskippedLables.push(labels[i]);
       }
 
-      var spacing = skipFactor * (fullAxisWidth - 2 * this.props.padding) / labels.length;
+      var spacing = skipFactor * (this.chartArea.width - 2 * this.chart.padding) / labels.length;
       build.text(unskippedLables, {
-        x: 2 * this.props.padding + this.columnWidth / 2,
-        y: this.props.height - this.props.padding
+        x: this.chartArea.x + this.chart.padding + this.columnWidth / 2,
+        y: this.chartArea.y + this.hAxis.padding + this.hAxis.textHeight
       }, spacing);
     }
   }, {
     key: "columnWidth",
     get: function get() {
-      return this.props.width / 2 / this.props.labels.length;
+      return this.chart.width / 2 / this.props.labels.length;
     }
   }]);
 

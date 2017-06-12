@@ -1,1 +1,1 @@
-aws cloudformation create-stack --stack-name binomium2 --template-body file://static-website-template.yml --parameters ParameterKey=DomainName,ParameterValue=geodesicjones.com ParameterKey=BucketSimpleName,ParameterValue=binomium2
+aws cloudformation create-stack --stack-name binomium --template-body file://static-website-template.yml --parameters ParameterKey=DomainName,ParameterValue=geodesicjones.com ParameterKey=BucketSimpleName,ParameterValue=binomium2

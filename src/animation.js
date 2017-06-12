@@ -17,8 +17,8 @@ class AnimationBuild {
     let yDelta = start.y < end.y ? this.delta : -this.delta;
 
     while (x != end.x || y != end.y) {
-      let nextX = this.isMoreLine(start.x, end.x, x) ? x + xDelta : end.x;
-      let nextY = this.isMoreLine(start.y, end.y, y) ? y + yDelta : end.y;
+      let nextX = this.isMoreLine(start.x, end.x, x + xDelta) ? x + xDelta : end.x;
+      let nextY = this.isMoreLine(start.y, end.y, y + yDelta) ? y + yDelta : end.y;
       this.frames.push({
         type: "line",
         start: { x: x, y: y },
@@ -30,15 +30,12 @@ class AnimationBuild {
   }
 
   text(txt, start, spacing) {
-    // TODO: separate out call to context
-    let ctx = document.getElementById("chart").getContext("2d");
     let x = start.x;
     let y = start.y;
     for (let i = 0; i < txt.length; i++) {
-      let textWidth = ctx.measureText(txt[i]).width;
       this.frames.push({
         type: "text",
-        location: { x: x - textWidth/2, y: y },
+        location: { x: x, y: y },
         text: txt[i]
       });
       x += spacing;
@@ -71,15 +68,20 @@ class AnimationDraw {
     this.drawFrame = this.drawFrame.bind(this);
   }
   drawLine(start, end) {
+    this.ctx.strokeStyle = "gray";
     this.ctx.beginPath();
     this.ctx.moveTo(start.x, start.y);
     this.ctx.lineTo(end.x, end.y);
     this.ctx.stroke();
   }
   drawText(text, location) {
-    this.ctx.fillText(text, location.x, location.y);
+    this.ctx.fillStyle = "black";
+    // center text horizontally
+    let measure = this.ctx.measureText(text);
+    this.ctx.fillText(text, location.x - measure.width/2, location.y);
   }
   drawColumn(width, height, location) {
+    this.ctx.fillStyle = "deepskyblue";
     this.ctx.fillRect(location.x, location.y, width, -height);
   }
   clear(x, y, width, height) {
