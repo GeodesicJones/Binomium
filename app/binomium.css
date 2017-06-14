@@ -6,7 +6,7 @@ h1 {
   font-family: courier;
   font-size: 24pt;
   padding: 0px 0px 10px 40px;
-  margin: 0px 0px 20px 20px;
+  margin: 0px 0px 40px 20px;
   border-bottom: 1px solid gainsboro;
 }
 
@@ -67,7 +67,7 @@ input[type=button] {
 
 #footer {
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 40px;
   background-image: url(footer.png);
   height: 28px;
 }
