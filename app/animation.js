@@ -21,7 +21,7 @@ var AnimationBuild = function () {
     }
   }, {
     key: "line",
-    value: function line(start, end) {
+    value: function line(start, end, delta) {
       var x = start.x;
       var y = start.y;
       var xDelta = start.x < end.x ? this.delta : -this.delta;
@@ -41,7 +41,7 @@ var AnimationBuild = function () {
     }
   }, {
     key: "text",
-    value: function text(txt, start, spacing) {
+    value: function text(txt, start, spacing, direction) {
       var x = start.x;
       var y = start.y;
       for (var i = 0; i < txt.length; i++) {
@@ -50,7 +50,11 @@ var AnimationBuild = function () {
           location: { x: x, y: y },
           text: txt[i]
         });
-        x += spacing;
+        if (direction == "vertical") {
+          y -= spacing;
+        } else {
+          x += spacing;
+        }
       }
     }
   }, {

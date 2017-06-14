@@ -8,9 +8,18 @@ class App extends React.Component {
     this.onBlurP = this.onBlurP.bind(this);
     this.onBlurNumObservations  = this.onBlurNumObservations.bind(this);
     this.getObservation = this.getObservation.bind(this);
+    this.makeChart = this.makeChart.bind(this);
   }
 
-  onClick() {
+  componentDidMount() {
+    this.makeChart();
+  }
+
+  onClick(){
+    this.makeChart();
+  }
+
+  makeChart() {
     let p = this.state.p;
     let n = this.state.n;
     let count = this.state.numObservations;
@@ -26,7 +35,8 @@ class App extends React.Component {
     }
 
     let series = {
-      data: []
+      data: [],
+      max: 0
     };
 
     for (let i = 0; i < count; i++) {
@@ -34,6 +44,9 @@ class App extends React.Component {
       values[observation]++;
       series.data.push({ index: observation, value: values[observation] });
     }
+
+    var maxItem = _.maxBy(series.data,function(item){ return item.value; });
+    series.max = maxItem.value;
 
     this.setState({ series: series, labels: labels });
   }
@@ -60,7 +73,8 @@ class App extends React.Component {
   render() {
     return (
         <div>
-          <h1>Welcome to The Binomium</h1>
+          <h2>Welcome to</h2>
+          <h1>The Binomium</h1>
           <div id="interactive">
             <Chart
               id="chart"
@@ -73,7 +87,9 @@ class App extends React.Component {
               <div>
                 n:{" "}
                 <input
-                  type="text"
+                  type="number"
+                  step="1"
+                  pattern="\d+"
                   defaultValue={this.state.n}
                   onChange={this.onBlurN}
                 />
@@ -81,7 +97,7 @@ class App extends React.Component {
               <div>
                 p:{" "}
                 <input
-                  type="text"
+                  type="number"
                   defaultValue={this.state.p}
                   onChange={this.onBlurP}
                 />
@@ -89,7 +105,9 @@ class App extends React.Component {
               <div>
                 #: {" "}
                 <input
-                  type="text"
+                  type="number"
+                  step="1"
+                  pattern="\d+"
                   defaultValue={this.state.numObservations}
                   onChange={this.onBlurNumObservations}
                 />
@@ -112,8 +130,10 @@ class App extends React.Component {
             <p/>
             What's interesting is how a series of random events approximates
             a non-random shape.
-            In my mind, it's a very simple example of emergent phenomana.
+            In my mind, it's a very simple example of emergent phenomena.
           </div>
+          <div id="clear"></div>
+          <div id="footer"></div>
       </div>
     );
   }

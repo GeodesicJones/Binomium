@@ -22,12 +22,23 @@ var App = function (_React$Component) {
     _this.onBlurP = _this.onBlurP.bind(_this);
     _this.onBlurNumObservations = _this.onBlurNumObservations.bind(_this);
     _this.getObservation = _this.getObservation.bind(_this);
+    _this.makeChart = _this.makeChart.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.makeChart();
+    }
+  }, {
     key: "onClick",
     value: function onClick() {
+      this.makeChart();
+    }
+  }, {
+    key: "makeChart",
+    value: function makeChart() {
       var p = this.state.p;
       var n = this.state.n;
       var count = this.state.numObservations;
@@ -43,7 +54,8 @@ var App = function (_React$Component) {
       }
 
       var series = {
-        data: []
+        data: [],
+        max: 0
       };
 
       for (var _i2 = 0; _i2 < count; _i2++) {
@@ -51,6 +63,11 @@ var App = function (_React$Component) {
         values[observation]++;
         series.data.push({ index: observation, value: values[observation] });
       }
+
+      var maxItem = _.maxBy(series.data, function (item) {
+        return item.value;
+      });
+      series.max = maxItem.value;
 
       this.setState({ series: series, labels: labels });
     }
@@ -87,9 +104,14 @@ var App = function (_React$Component) {
         "div",
         null,
         React.createElement(
+          "h2",
+          null,
+          "Welcome to"
+        ),
+        React.createElement(
           "h1",
           null,
-          "Welcome to The Binomium"
+          "The Binomium"
         ),
         React.createElement(
           "div",
@@ -110,7 +132,9 @@ var App = function (_React$Component) {
               "n:",
               " ",
               React.createElement("input", {
-                type: "text",
+                type: "number",
+                step: "1",
+                pattern: "\\d+",
                 defaultValue: this.state.n,
                 onChange: this.onBlurN
               })
@@ -121,7 +145,7 @@ var App = function (_React$Component) {
               "p:",
               " ",
               React.createElement("input", {
-                type: "text",
+                type: "number",
                 defaultValue: this.state.p,
                 onChange: this.onBlurP
               })
@@ -132,7 +156,9 @@ var App = function (_React$Component) {
               "#: ",
               " ",
               React.createElement("input", {
-                type: "text",
+                type: "number",
+                step: "1",
+                pattern: "\\d+",
                 defaultValue: this.state.numObservations,
                 onChange: this.onBlurNumObservations
               })
@@ -167,8 +193,10 @@ var App = function (_React$Component) {
           ),
           "Then click 'Make It So', and it will.",
           React.createElement("p", null),
-          "What's interesting is how a series of random events approximates a non-random shape. In my mind, it's a very simple example of emergent phenomana."
-        )
+          "What's interesting is how a series of random events approximates a non-random shape. In my mind, it's a very simple example of emergent phenomena."
+        ),
+        React.createElement("div", { id: "clear" }),
+        React.createElement("div", { id: "footer" })
       );
     }
   }]);

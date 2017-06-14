@@ -10,7 +10,7 @@ class AnimationBuild {
     return (start < end && current < end) || (start > end && current > end);
   }
 
-  line(start, end) {
+  line(start, end,delta) {
     let x = start.x;
     let y = start.y;
     let xDelta = start.x < end.x ? this.delta : -this.delta;
@@ -29,7 +29,7 @@ class AnimationBuild {
     }
   }
 
-  text(txt, start, spacing) {
+  text(txt, start, spacing, direction) {
     let x = start.x;
     let y = start.y;
     for (let i = 0; i < txt.length; i++) {
@@ -38,7 +38,12 @@ class AnimationBuild {
         location: { x: x, y: y },
         text: txt[i]
       });
-      x += spacing;
+      if(direction == "vertical"){
+        y -= spacing;
+      }
+      else{
+        x += spacing;
+      }
     }
   }
 

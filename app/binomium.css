@@ -1,19 +1,35 @@
-#chart {
-  margin: 0 20px 20px 20px;
-  vertical-align: top;
+body{
+  background-color: AliceBlue;
 }
 
 h1 {
   font-family: courier;
-  font-size: 20pt;
-  margin-left: 20px;
-  margin-top: 20px;
+  font-size: 24pt;
+  padding: 0px 0px 10px 40px;
+  margin: 0px 0px 20px 20px;
+  border-bottom: 1px solid gainsboro;
 }
 
-input[type=text] {
+h2 {
+  font-family: courier;
+  font-size: 16pt;
+  margin: 20px 0px 0px 20px;
+}
+
+input[type=number] {
   width: 40px;
   margin: 2px 0px;
   text-align: center;
+}
+
+/*
+  Thanks to: https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box
+*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type=button] {
@@ -23,9 +39,15 @@ input[type=button] {
   border: solid 1px gray;
 }
 
+#chart {
+  margin: 0 20px 20px 20px;
+  vertical-align: top;
+  background-color: white;
+}
+
 #interactive {
-  float: left;
   display: inline-block;
+  vertical-align: top;
 }
 
 #controls {
@@ -35,12 +57,18 @@ input[type=button] {
 }
 
 #description {
-  float: left;
   width: 400px;
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 40px;
   font-size: 11pt;
   font-family: arial;
   font-weight: normal;
   padding-top: 15px;
+}
+
+#footer {
+  margin-bottom: 10px;
+  margin-top: 20px;
+  background-image: url(footer.png);
+  height: 28px;
 }

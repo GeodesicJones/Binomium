@@ -49,16 +49,17 @@ var Chart = function (_React$Component) {
       this.chartArea.height = this.chartArea.y - this.chart.padding;
 
       var draw = new AnimationDraw(this.props.id);
-      var build = new AnimationBuild(10);
+      this.build = new AnimationBuild();
+      var build = this.build;
       this.buildBorderAnimation(build);
       draw.animate(build.frames);
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(nextProps, nextState) {
-      var build = new AnimationBuild(10);
+      var build = new AnimationBuild();
       build.clear(1, 1, this.chart.width - 2, this.chart.height - 2);
-      this.buildAxisAnimation(build, this.props.labels);
+      this.buildAxisAnimation(build);
       this.buildSeriesAnimation(build, this.props.series, this.props.labels.length);
 
       if (!this.draw) this.draw = new AnimationDraw(this.props.id);
@@ -73,10 +74,11 @@ var Chart = function (_React$Component) {
   }, {
     key: "buildBorderAnimation",
     value: function buildBorderAnimation(build) {
-      build.line({ x: 0, y: 0 }, { x: this.chart.width, y: 0 });
-      build.line({ x: this.chart.width, y: 0 }, { x: this.chart.width, y: this.chart.height });
-      build.line({ x: this.chart.width, y: this.chart.height }, { x: 0, y: this.chart.height });
-      build.line({ x: 0, y: this.chart.height }, { x: 0, y: 0 });
+      var delta = 30;
+      build.line({ x: 0, y: 0 }, { x: this.chart.width, y: 0 }, delta);
+      build.line({ x: this.chart.width, y: 0 }, { x: this.chart.width, y: this.chart.height }, delta);
+      build.line({ x: this.chart.width, y: this.chart.height }, { x: 0, y: this.chart.height }, delta);
+      build.line({ x: 0, y: this.chart.height }, { x: 0, y: 0 }, delta);
     }
   }, {
     key: "buildSeriesAnimation",
@@ -87,7 +89,7 @@ var Chart = function (_React$Component) {
           maxColumnHeight = series.data[i].value;
         }
       }
-      var verticalScalingFactor = this.chartArea.height / maxColumnHeight;
+      var verticalScalingFactor = this.chartArea.height / series.max;
 
       for (var _i = 0; _i < series.data.length; _i++) {
         var index = series.data[_i].index;
@@ -101,22 +103,35 @@ var Chart = function (_React$Component) {
     }
   }, {
     key: "buildAxisAnimation",
-    value: function buildAxisAnimation(build, labels) {
+    value: function buildAxisAnimation(build) {
       // draw horizontal axis
-      build.line({ x: this.chartArea.x, y: this.chartArea.y }, { x: this.chartArea.x + this.chartArea.width, y: this.chartArea.y });
+      var delta = 10;
+      build.line({ x: this.chartArea.x, y: this.chartArea.y }, { x: this.chartArea.x + this.chartArea.width, y: this.chartArea.y }, delta);
 
       // add labels to horizontal axis
-      var skipFactor = 1 + Math.floor(labels.length / 10);
+      var skipFactor = 1 + Math.floor(this.props.labels.length / 10);
       var unskippedLables = [];
-      for (var i = 0; i < labels.length; i += skipFactor) {
-        unskippedLables.push(labels[i]);
+      for (var i = 0; i < this.props.labels.length; i += skipFactor) {
+        unskippedLables.push(this.props.labels[i]);
       }
 
-      var spacing = skipFactor * (this.chartArea.width - 2 * this.chart.padding) / labels.length;
+      var hSpacing = skipFactor * (this.chartArea.width - 2 * this.chart.padding) / this.props.labels.length;
       build.text(unskippedLables, {
         x: this.chartArea.x + this.chart.padding + this.columnWidth / 2,
         y: this.chartArea.y + this.hAxis.padding + this.hAxis.textHeight
-      }, spacing);
+      }, hSpacing);
+
+      // add vertical axis
+      build.line({ x: this.chartArea.x, y: this.chartArea.y }, { x: this.chartArea.x, y: this.chart.padding }, delta);
+
+      // add labels to vertical axis
+
+      var vSpacing = this.chartArea.height / 4;
+      var series = this.props.series;
+      build.text(["", Math.round(series.max / 4), Math.round(series.max / 2), Math.round(series.max / 4), series.max], {
+        x: this.chartArea.x - this.vAxis.width / 2,
+        y: this.chartArea.y + this.hAxis.textHeight / 2
+      }, vSpacing, "vertical");
     }
   }, {
     key: "columnWidth",
