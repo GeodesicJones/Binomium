@@ -78,8 +78,8 @@ class App extends React.Component {
           <div id="interactive">
             <Chart
               id="chart"
-              width={300}
-              height={300}
+              width={450}
+              height={350}
               series={this.state.series}
               labels={this.state.labels}
             />
@@ -127,6 +127,9 @@ class App extends React.Component {
               <li>#: the number of times to toss the whole handful</li>
             </ul>
             Then click 'Make It So', and it will.
+            <p/>
+            The horizontal axis shows the possible number of heads in a given throw.
+            The vertial axis shows how many times a throw came out that way.
             <p/>
             What's interesting is how a series of random events approximates
             a non-random shape.

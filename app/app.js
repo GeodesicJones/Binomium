@@ -118,8 +118,8 @@ var App = function (_React$Component) {
           { id: "interactive" },
           React.createElement(Chart, {
             id: "chart",
-            width: 300,
-            height: 300,
+            width: 450,
+            height: 350,
             series: this.state.series,
             labels: this.state.labels
           }),
@@ -192,6 +192,8 @@ var App = function (_React$Component) {
             )
           ),
           "Then click 'Make It So', and it will.",
+          React.createElement("p", null),
+          "The horizontal axis shows the possible number of heads in a given throw. The vertial axis shows how many times a throw came out that way.",
           React.createElement("p", null),
           "What's interesting is how a series of random events approximates a non-random shape. In my mind, it's a very simple example of emergent phenomena."
         ),
